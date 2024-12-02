@@ -5,13 +5,13 @@ on:
       - '**.puml'
     branches:
       - master
-      - plantUML-Diagrams
+      - gh-pages
   pull_request:
     paths:
       - '**.puml'
     branches:
       - master
-      - plantUML-Diagrams
+      - gh-pages
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -43,13 +43,15 @@ jobs:
         run: |
           echo ${{ steps.getfile.outputs.files }}
       - name: Generate SVG Diagrams
-        uses: UWB-Biocomputing/plantuml-github-action@main
+        uses: rotaract/plantuml-action@v1
         with:
-            args: -o "diagrams" -v -tsvg ${{ steps.getfile.outputs.files }}
+          pattern: "docs/**.puml"
+          format: svg ${{ steps.getfile.outputs.files }}
       - name: Generate PNG Diagrams
-        uses: UWB-Biocomputing/plantuml-github-action@main
+        uses: rotaract/plantuml-action@v1
         with:
-            args: -o "diagrams" -v -tpng ${{ steps.getfile.outputs.files }}
+          pattern: "docs/**.puml"
+          format: png ${{ steps.getfile.outputs.files }}
       - name: Push Local Changes
         uses:  stefanzweifel/git-auto-commit-action@v4 
         with:
